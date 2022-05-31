@@ -65,7 +65,7 @@ namespace TRABAJO_INTEGRADOR
 			Console.WriteLine("                         Abogado: {0}", abogado.getNombreYApellido());
 			Console.WriteLine("                          D.N.I.: {0}", abogado.getDni());
 			Console.WriteLine("                    Especialidad: {0}", abogado.getEspecialidad());
-			Console.WriteLine(" Candidad de expedientes a cargo: {0}\n", abogado.getCantidadExpedientes());
+			Console.WriteLine(" Candidad de expedientes a cargo: {0}\n", abogado.getCantidadDeExpedientes());
 		}
 			
 		

@@ -117,7 +117,7 @@ namespace TRABAJO_INTEGRADOR
 				
 			for(int i = 0; i < this.abogados.Count; i++)//Se recorren todos los expedientes
 			{
-				if(((Abogado)(this.abogados[i])).getCantidadExpedientes() < this.maximoExpedientesPorAbogado)
+				if(((Abogado)(this.abogados[i])).getCantidadDeExpedientes() < this.maximoExpedientesPorAbogado)
 				{
 					listaDisponibles.Add(abogados[i]);
 				}
@@ -142,9 +142,9 @@ namespace TRABAJO_INTEGRADOR
 			{
 				j++;
 			};
-			if(((Abogado)(this.abogados[j])).getCantidadExpedientes() < (this.maximoExpedientesPorAbogado))
+			if(((Abogado)(this.abogados[j])).getCantidadDeExpedientes() < (this.maximoExpedientesPorAbogado))
 			{
-				((Abogado)(this.abogados[j])).incrementarCantidadExpedientes();
+				((Abogado)(this.abogados[j])).incrementarCantidadDeExpedientes();
 			}
 			else 
 			{
@@ -168,9 +168,9 @@ namespace TRABAJO_INTEGRADOR
 			
 			for (int i = 0 ; i < this.abogados.Count; i++)
 			{
-				if(((Abogado)abogados[i]).getCantidadExpedientes() < menor)
+				if(((Abogado)abogados[i]).getCantidadDeExpedientes() < menor)
 				{
-					menor = ((Abogado)abogados[i]).getCantidadExpedientes();
+					menor = ((Abogado)abogados[i]).getCantidadDeExpedientes();
 					abogadoRetorno = (Abogado)(abogados[i]);
 				}
 			}
@@ -180,10 +180,10 @@ namespace TRABAJO_INTEGRADOR
 		
 		public void eliminarAbogado(Abogado abogado)
 		{			
-			if(existeDniAbogado(abogado.getDni()))//Si el abogado está dentro del estudio.
+			if(existeDniAbogado(abogado.getDni()))//Si el abogado que voy a eliminar está dentro del estudio.
 			{
 				int posicionAbogado   = buscarAbogado(abogado);    //Optengo el indice de la lista de abogados
-				abogado = (Abogado)this.abogados[posicionAbogado]; //Optengo el abogado con el indice.
+				abogado = (Abogado)this.abogados[posicionAbogado]; //Optengo el abogado a eliminar con el indice.
 				
 				this.abogados.Remove(abogado); //Elimino el abogado de la lista de abogados.
 				Console.WriteLine(" EL ABOGADO [{0}] D.N.I.: [{1}] FUE ELIMINADO", abogado.getNombreYApellido(), abogado.getDni());
@@ -195,18 +195,18 @@ namespace TRABAJO_INTEGRADOR
 						Abogado abogadoNuevo = new Abogado(); //Creo un nuevo abogado
 						abogadoNuevo = this.buscarAbogadoConMenosExpedientes();//El nuevo abogado será el que menos expedientes tenga a cargo
 						
-						if(abogadoNuevo.getCantidadExpedientes() < this.maximoExpedientesPorAbogado)//Si hay abogados disponibles todavia
+						if(abogadoNuevo.getCantidadDeExpedientes() < this.maximoExpedientesPorAbogado)//Si hay abogados disponibles todavia
 						{
 							posicionAbogado = this.buscarAbogado(abogadoNuevo); //optengo el indice de la lista de abogados para el nuevo abogado
-							((Abogado)this.abogados[posicionAbogado]).incrementarCantidadExpedientes(); //Incremento la cantidad de expedientes de nuevo abogado a cargo.
+							((Abogado)this.abogados[posicionAbogado]).incrementarCantidadDeExpedientes(); //Incremento la cantidad de expedientes de nuevo abogado a cargo.
 							
-							((Expediente)(this.expedientes[i])).setAbogadoACargo(abogadoNuevo);//Seteo el nuevo abogado
+							((Expediente)(this.expedientes[i])).setAbogadoACargo(abogadoNuevo);//Seteo el nuevo abogado con la candidad de expedientes incrementada
 							
-							Console.WriteLine(" ABOGADO A CARGO DEL EXPEDIENTE NUMERO[{0}] REACIGNADO", ((Expediente)(this.expedientes[i])).getNumero());
+							Console.WriteLine(" ABOGADO A CARGO DEL EXPEDIENTE NUMERO[{0}] REASIGNADO", ((Expediente)(this.expedientes[i])).getNumero());
 							Console.Write(" NUEVO ABOGADO ASIGNADO: {0}  ", abogadoNuevo.getNombreYApellido());
 							Console.WriteLine(" D.N.I : {0}", abogadoNuevo.getDni());
 						}
-						else 
+						else							
 						{
 							throw new SobrepasoLimiteDeExpedientes(" HAY EXPEDIENTES QUE NO PUDIERON REASIGNARSELE NINGUN ABOGADO A CARGO");
 						}
@@ -231,9 +231,9 @@ namespace TRABAJO_INTEGRADOR
 			{
 				i++;
 			};
-			if(((Abogado)(this.abogados[i])).getCantidadExpedientes() < (this.maximoExpedientesPorAbogado))
+			if(((Abogado)(this.abogados[i])).getCantidadDeExpedientes() < (this.maximoExpedientesPorAbogado))
 			{
-				((Abogado)(this.abogados[i])).incrementarCantidadExpedientes();//Incremento la cantidad de expedientes
+				((Abogado)(this.abogados[i])).incrementarCantidadDeExpedientes();//Incremento la cantidad de expedientes
 				expedienteNuevo.setAbogadoACargo((Abogado)this.abogados[i]);//Actualizo el abogado en la lista de expedientes
 				
 				expedientes.Add(expedienteNuevo); //Agrego el expediente al estudio.
@@ -310,7 +310,7 @@ namespace TRABAJO_INTEGRADOR
 				int posicion = this.buscarAbogado(abogadoACargo);
 				//Busco la posicion del abogado a cargo en la lista de abogados.
 				
-				((Abogado)(this.abogados[posicion])).decrementarCantidadExpedientes();
+				((Abogado)(this.abogados[posicion])).decrementarCantidadDeExpedientes();
 				//Decremento la cantidad de expedientes del abogado.
 				
 				Console.WriteLine(((Expediente)(this.expedientes[i])).toString());//Informo el expediente eliminado

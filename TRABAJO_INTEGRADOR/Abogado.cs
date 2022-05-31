@@ -18,7 +18,7 @@ namespace TRABAJO_INTEGRADOR
 		private string	nombreYApellido;
 		private long	dni;                //Se identifica a los abogados por el dni.
 		private string	especialidad;       //Laboral, penal, comercial, familia, etc.
-		private int		cantidadExpedientes;
+		private int		cantidadDeExpedientes;
 		
 		public Abogado()
 		{
@@ -30,7 +30,7 @@ namespace TRABAJO_INTEGRADOR
 			this.nombreYApellido 		= nombreYApellido;
 			this.dni					= dni;
 			this.especialidad			= especialidad;
-			this.cantidadExpedientes	= 0;
+			this.cantidadDeExpedientes	= 0;
 		}
 		
 		public void setAbogado( string nombreYApellido, long dni, string especialidad, int cantidadExpedientes )
@@ -38,7 +38,7 @@ namespace TRABAJO_INTEGRADOR
 			this.nombreYApellido 		= nombreYApellido;
 			this.dni					= dni;
 			this.especialidad			= especialidad;
-			this.cantidadExpedientes	= cantidadExpedientes;
+			this.cantidadDeExpedientes	= cantidadExpedientes;
 		}
 		
 		public string getNombreYApellido()
@@ -56,12 +56,12 @@ namespace TRABAJO_INTEGRADOR
 			return this.especialidad;
 		}
 		
-		public int getCantidadExpedientes()
+		public int getCantidadDeExpedientes()
 		{
-			return this.cantidadExpedientes;
+			return this.cantidadDeExpedientes;
 		}
 		
-		public void setNombreApellido(string nombreYApellido)
+		public void setNombreYApellido(string nombreYApellido)
 		{
 			this.nombreYApellido = nombreYApellido ;
 		}
@@ -76,23 +76,23 @@ namespace TRABAJO_INTEGRADOR
 			this.especialidad = especialidad;
 		}
 		
-		public void setCantidadExpedientes(int cantidadExpedientes)
+		public void setCantidadDeExpedientes(int cantidadDeExpedientes)
 		{
-			this.cantidadExpedientes = cantidadExpedientes;
+			this.cantidadDeExpedientes = cantidadDeExpedientes;
 		}
 		public string toString()  
 		{
 			string cadena =   "                 Abogado: "+ this.nombreYApellido+
 			                "\n                   D.N.I: "+ this.dni+
 			                "\n            Especialidad: "+ this.especialidad+
-			                "\n Cantidad de expedientes: "+ this.cantidadExpedientes;
+			                "\n Cantidad de expedientes: "+ this.cantidadDeExpedientes;
 			
 			return (cadena);
 		}
 		
 		public string toStringLinea()
 		{
-			string cadena = nombreYApellido+";"+dni+" "+especialidad+";"+cantidadExpedientes;
+			string cadena = nombreYApellido+";"+dni+" "+especialidad+";"+cantidadDeExpedientes;
 			
 			return (cadena);                  
 		}
@@ -103,23 +103,23 @@ namespace TRABAJO_INTEGRADOR
 			
 			string[] datos = cadenaConFormato.Split(new char[]{';'});
 			
-			abogadoRetorno.setNombreApellido(datos[0]);
+			abogadoRetorno.setNombreYApellido(datos[0]);
 			abogadoRetorno.setDni(long.Parse(datos[1]));
 			abogadoRetorno.setEspecialidad(datos[2]);
-			abogadoRetorno.setCantidadExpedientes(int.Parse(datos[3]));
+			abogadoRetorno.setCantidadDeExpedientes(int.Parse(datos[3]));
 			
 			return (abogadoRetorno);
 			
 		}
 		
-		public void incrementarCantidadExpedientes()
+		public void incrementarCantidadDeExpedientes()
 		{
-			this.cantidadExpedientes++;
+			this.cantidadDeExpedientes++;
 		}
 		
-		public void decrementarCantidadExpedientes()
+		public void decrementarCantidadDeExpedientes()
 		{
-			this.cantidadExpedientes--;
+			this.cantidadDeExpedientes--;
 		}
 		
 		public bool esIgual( Abogado abogado )

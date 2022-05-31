@@ -69,7 +69,7 @@ namespace TRABAJO_INTEGRADOR
 			string[] datos = expedienteYAbogado[0].Split(new char[]{';'});
 			string[] abogadoDatos = expedienteYAbogado[1].Split(new char[]{';'});
 			
-			abogado.setNombreApellido(abogadoDatos[0]);
+			abogado.setNombreYApellido(abogadoDatos[0]);
 			abogado.setDni((long.Parse(abogadoDatos[1])));
 			
 			expedienteRetorno.setNumero(int.Parse(datos[0]));
