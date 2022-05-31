@@ -1,0 +1,6 @@
+C:\Users\andre\OneDrive\Documentos\SharpDevelop Projects\TRABAJO_INTEGRADOR\TRABAJO_INTEGRADOR\obj\Debug\TRABAJO_INTEGRADOR.csprojResolveAssemblyReference.cache
+C:\Users\andre\OneDrive\Documentos\SharpDevelop Projects\TRABAJO_INTEGRADOR\TRABAJO_INTEGRADOR\bin\Debug\TRABAJO_INTEGRADOR.exe.config
+C:\Users\andre\OneDrive\Documentos\SharpDevelop Projects\TRABAJO_INTEGRADOR\TRABAJO_INTEGRADOR\bin\Debug\TRABAJO_INTEGRADOR.exe
+C:\Users\andre\OneDrive\Documentos\SharpDevelop Projects\TRABAJO_INTEGRADOR\TRABAJO_INTEGRADOR\bin\Debug\TRABAJO_INTEGRADOR.pdb
+C:\Users\andre\OneDrive\Documentos\SharpDevelop Projects\TRABAJO_INTEGRADOR\TRABAJO_INTEGRADOR\obj\Debug\TRABAJO_INTEGRADOR.exe
+C:\Users\andre\OneDrive\Documentos\SharpDevelop Projects\TRABAJO_INTEGRADOR\TRABAJO_INTEGRADOR\obj\Debug\TRABAJO_INTEGRADOR.pdb
