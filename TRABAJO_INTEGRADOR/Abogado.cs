@@ -18,7 +18,7 @@ namespace TRABAJO_INTEGRADOR
 		private string	nombreYApellido;
 		private long	dni;                //Se identifica a los abogados por el dni.
 		private string	especialidad;       //Laboral, penal, comercial, familia, etc.
-		private int		cantidadDeExpedientes;
+		private int     cantidadDeExpedientes;
 		
 		public Abogado()
 		{
@@ -27,18 +27,18 @@ namespace TRABAJO_INTEGRADOR
 		
 		public Abogado( string nombreYApellido, long dni, string especialidad )
 		{
-			this.nombreYApellido 		= nombreYApellido;
-			this.dni					= dni;
-			this.especialidad			= especialidad;
-			this.cantidadDeExpedientes	= 0;
+			this.nombreYApellido        = nombreYApellido;
+			this.dni                    = dni;
+			this.especialidad           = especialidad;
+			this.cantidadDeExpedientes  = 0;
 		}
 		
 		public void setAbogado( string nombreYApellido, long dni, string especialidad, int cantidadExpedientes )
 		{
-			this.nombreYApellido 		= nombreYApellido;
-			this.dni					= dni;
-			this.especialidad			= especialidad;
-			this.cantidadDeExpedientes	= cantidadExpedientes;
+			this.nombreYApellido        = nombreYApellido;
+			this.dni                    = dni;
+			this.especialidad           = especialidad;
+			this.cantidadDeExpedientes  = cantidadExpedientes;
 		}
 		
 		public string getNombreYApellido()

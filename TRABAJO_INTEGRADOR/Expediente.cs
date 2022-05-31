@@ -34,7 +34,7 @@ namespace TRABAJO_INTEGRADOR
 			this.fecha         = fecha;
 			this.titular       = titular;
 			this.tipo          = tipo;
-			this.estado 	   = estado;
+			this.estado        = estado;
 			this.abogadoACargo = abogadoACargo;
 		}
 		public string toString()
@@ -144,12 +144,12 @@ namespace TRABAJO_INTEGRADOR
 		
 		public void setExpediente(int numero, string titular, string tipo, string estado, Abogado abogadoACargo, DateTime fecha)
 		{
-			this. numero		= numero;
-			this.titular		= titular;
-			this.tipo			= tipo;
-			this.estado			= estado;
-			this.abogadoACargo	= abogadoACargo;
-			this.fecha			= fecha;
+			this. numero        = numero;
+			this.titular        = titular;
+			this.tipo           = tipo;
+			this.estado         = estado;
+			this.abogadoACargo  = abogadoACargo;
+			this.fecha          = fecha;
 		}
 	}
 }

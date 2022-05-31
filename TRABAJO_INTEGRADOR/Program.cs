@@ -13,7 +13,7 @@ namespace TRABAJO_INTEGRADOR
 {
 	class Program
 	{
-		const int LIMITE_DE_ABOGADOS    = 5;
+		const int LIMITE_DE_ABOGADOS = 5;
 		const int MAXIMO_DE_EXPEDIENTES_POR_ABOGADOS = 6;
 		
 		static void menu()
@@ -81,7 +81,7 @@ namespace TRABAJO_INTEGRADOR
 			Console.WriteLine("______________________________________________________________");
 			Console.WriteLine("[[[[[[[[[[[[[[[ LISTA DE ABOGADOS DISPONIBLES ]]]]]]]]]]]]]]]]\n");
 			
-			for(int i= 0; i < abogadosDisponibles.Count; i++)
+			for(int i = 0; i < abogadosDisponibles.Count; i++)
 			{
 				Console.WriteLine("               [NUMERO DE OPCION: {0}]", (i+1));//Enumera los abogados desde 1
 				imprimirAbogado((Abogado)(abogadosDisponibles[i]));
