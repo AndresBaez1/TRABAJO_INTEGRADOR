@@ -295,25 +295,27 @@ namespace TRABAJO_INTEGRADOR
 				}
 			}while(!ok);
 			
-			//CARGA DE EXPEDIENTES			
-			do 
+			//CARGA DE EXPEDIENTES	
+			if(estudio.cantidadDeAbogados() > 0)
 			{
-				try 
+				do 
 				{
-					Console.Clear();
-					ok = true;
-					cargarExpedientes(ref estudio);						
-				}
-				catch(FormatException)
-				{
-					ok = false;
-					Console.WriteLine(" NO INGRESO UN DATO CORRECTAMENTE");
-					Console.ReadKey(true);
-					Console.Clear();
-					continue;
-				}
-			}while(!ok);
-	
+					try 
+					{
+						Console.Clear();
+						ok = true;
+						cargarExpedientes(ref estudio);						
+					}
+					catch(FormatException)
+					{
+						ok = false;
+						Console.WriteLine(" NO INGRESO UN DATO CORRECTAMENTE");
+						Console.ReadKey(true);
+						Console.Clear();
+						continue;
+					}
+				}while(!ok);
+			}
        		//MENU PRINCIPAL			
 			do{
 				try {
