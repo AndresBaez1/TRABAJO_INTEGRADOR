@@ -43,9 +43,17 @@ namespace TRABAJO_INTEGRADOR
 					        "\n           Fecha: "+ this.fecha.ToString()+
 							"\n         Titular: "+ this.titular+
 					        "\n            Tipo: "+ this.tipo+
-					        "\n          Estado: "+ this.estado+
-				            "\n Abogado a cargo: "+ this.abogadoACargo.getNombreYApellido()+
+							"\n          Estado: "+ this.estado;
+			
+			if(this.getAbogadoACargo() != null)
+			{
+				         cadena = cadena+"\n Abogado a cargo: "+ this.abogadoACargo.getNombreYApellido()+
 							               " DNI["+ this.abogadoACargo.getDni()+"]";
+			}
+			else
+			{
+				cadena = cadena+"\n Abogado a cargo: NO TIENE ABOGADO A CARGO";
+			}
 			
 			return (cadena);
 		}

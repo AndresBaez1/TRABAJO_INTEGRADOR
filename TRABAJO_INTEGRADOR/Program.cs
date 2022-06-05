@@ -20,14 +20,15 @@ namespace TRABAJO_INTEGRADOR
 		{
 			Console.WriteLine("\n"+
 			                  " [0] Salir\n" +
-			                  " [1] Agregar un nuevo abogado\n" +
+			                  " [1] Agregar un nuevo abogado a la lista de abogados\n" +
 			                  " [2] Eliminar abogado\n" +
 			                  " [3] Listar abogados\n" +
 			                  " [4] Listar expedientes\n" +
-			                  " [5] Agregar un nuevo expediente\n" +
+			                  " [5] Agregar un nuevo expediente a la lista de expedientes\n" +
 			                  " [6] Modificar estado de un expediente\n" +
-			                  " [7] Eliminar expediente\n" +
-			                  " [8] Listar expedientes 'AUDIENCIA' de en un mes determinado\n\n");
+			                  " [7] Modificar abogado a cargo de un expediente\n" +
+			                  " [8] Eliminar expediente\n" +
+			                  " [9] Listar expedientes 'AUDIENCIA' en un mes determinado\n\n");
 			
 			Console.Write(" ELIJA UNA OPCION: ");
 		}
@@ -72,38 +73,50 @@ namespace TRABAJO_INTEGRADOR
 		static Abogado elegirAbogadoParaExpediente(EstudioAbogado estudio)
 			//Se elige un abogado dentro de los que no sobrepasaron el limite de expedientes y se lo retorna
 		{
-			ArrayList abogadosDisponibles = new ArrayList();
-			abogadosDisponibles = estudio.abogadosDisponibles();
 			Abogado abogadoElegido = new Abogado();
-			
-			int eleccion;
+			int posicion;
+			int contador;
+			contador = 0;
 			
 			Console.WriteLine("______________________________________________________________");
 			Console.WriteLine("[[[[[[[[[[[[[[[ LISTA DE ABOGADOS DISPONIBLES ]]]]]]]]]]]]]]]]\n");
 			
-			for(int i = 0; i < abogadosDisponibles.Count; i++)
+			estudio.comenzarAbogados();
+			for(int i = 0; i < estudio.cantidadDeAbogados(); i++)
 			{
-				Console.WriteLine("               [NUMERO DE OPCION: {0}]", (i+1));//Enumera los abogados desde 1
-				imprimirAbogado((Abogado)(abogadosDisponibles[i]));
+				if(estudio.pedirAbogado().getCantidadDeExpedientes() < MAXIMO_DE_EXPEDIENTES_POR_ABOGADOS )
+				{
+					contador++;
+					Console.WriteLine("               [NUMERO DE POSICION: {0}]", (i+1));//Enumera los abogados desde 1
+					imprimirAbogado(estudio.pedirAbogado());
+				}
+				estudio.siguienteAbogado();
 			}
 			Console.WriteLine("______________________________________________________________");
 			
-			try 
+			if(contador > 0)
 			{
-				Console.WriteLine(" ELIJA UN ABOGADO A CARGO DE LA LISTA DE ABOGADOS DISPONIBLES");
-				Console.Write(" NUMERO DE OPCION DEL ABOGADO ELEGIDO: ");
-				eleccion = int.Parse((Console.ReadLine()));
-				abogadoElegido = ((Abogado)(abogadosDisponibles[eleccion-1])); //Se le resta 1 a la opcion elegida para que concuerde con el indice del arreglo.
+				try 
+				{
+					Console.WriteLine(" ELIJA UN ABOGADO A CARGO DE LA LISTA DE ABOGADOS DISPONIBLES");
+					Console.Write(" NUMERO DE POSICION DEL ABOGADO ELEGIDO: ");
+					posicion = int.Parse((Console.ReadLine()));
+					abogadoElegido = (estudio.pedirAbogadoPorPosicion(posicion-1)); //Se le resta 1 a la opcion elegida para que concuerde con el indice del arreglo.
+				}
+				catch (FormatException)
+				{
+					Console.WriteLine(" ERROR: LA OPCION DEBE SER UN NUMERO ENTERO");
+				}
+				catch(IndexOutOfRangeException)
+				{
+					Console.WriteLine(" ERROR: EL NUMERO DE POSICION QUE INGRESO NO ES VALIDO");
+				}
 			}
-			catch (FormatException)
+			else 
 			{
-				Console.WriteLine(" ERROR: la opcion debe ser un numero entero");
+				Console.WriteLine(" NO HAY ABOGADOS DISPONIBLES");
+				abogadoElegido = null;
 			}
-			catch(IndexOutOfRangeException)
-			{
-				Console.WriteLine(" Error: el numero que ingreso como opcion no es valido");
-			}
-			
 			return (abogadoElegido);//Retorna el abogado elegido.
 		}
 		
@@ -133,11 +146,17 @@ namespace TRABAJO_INTEGRADOR
 			int repeticiones;
 			Abogado abogado;
 			
-			Console.WriteLine("\n Puede agregar un maximo de {0} abogados", LIMITE_DE_ABOGADOS);
-			Console.Write(" ¿Cuantos abogados va a cargar? ");
-			repeticiones = int.Parse(Console.ReadLine());
-			Console.Clear();
+			do{
+				Console.WriteLine("\n Puede agregar un maximo de {0} abogados", LIMITE_DE_ABOGADOS);
+				Console.Write(" ¿Cuantos abogados va a cargar? ");
+				repeticiones = int.Parse(Console.ReadLine());
+				if((repeticiones > LIMITE_DE_ABOGADOS) || (repeticiones < 0))
+				{
+					Console.WriteLine(" DEBE INGRESAR UN ENTERO ENTRE  0 y {0}", LIMITE_DE_ABOGADOS);
+				}
+			}while((repeticiones > LIMITE_DE_ABOGADOS) || (repeticiones < 0));
 			
+			Console.Clear();
 			for(int i = 0; i < repeticiones; i++)
 			{
 				Console.WriteLine("\n CARGANDO ABOGADO {0}° DE {1}\n", (i+1), repeticiones);
@@ -152,15 +171,21 @@ namespace TRABAJO_INTEGRADOR
 		{
 			Expediente nuevoExpediente = new Expediente();
 			int repeticiones;
-		
-			int capacidad = estudio.cantidadDeAbogados()*MAXIMO_DE_EXPEDIENTES_POR_ABOGADOS;
-			Console.Clear();
-			Console.WriteLine("\n CARGA DE EXPEDIENTES\n");
-			Console.WriteLine(" Puede agregar un maximo de {0} expedientes", capacidad);
-			Console.Write(" ¿Cuantos expedientes va a cargar? ");
-			repeticiones = int.Parse(Console.ReadLine());
-			Console.Clear();
 			
+			int capacidad = estudio.cantidadDeAbogados()*MAXIMO_DE_EXPEDIENTES_POR_ABOGADOS;
+			do {
+				Console.WriteLine("\n CARGA DE EXPEDIENTES\n");
+				Console.WriteLine(" Puede agregar un maximo de {0} expedientes", capacidad);
+				Console.Write(" ¿Cuantos expedientes va a cargar? ");
+				repeticiones = int.Parse(Console.ReadLine());
+				Console.Clear();
+				if((repeticiones > capacidad) || (repeticiones < 0))
+				{
+					Console.WriteLine(" DEBE INGRESAR UN ENTERO ENTRE  0 y {0}", capacidad);
+				}
+			}while((repeticiones > capacidad) || (repeticiones < 0));
+			
+			Console.Clear();
 			for(int i = 0; i < repeticiones; i++)
 			{
 				Console.Clear();
@@ -232,7 +257,7 @@ namespace TRABAJO_INTEGRADOR
 				}
 				if(contador == 0)
 				{
-					Console.WriteLine("NO HAY EXPEDIENTES TIPO '{0}' EN EL MES {1}", tipo, mes);
+					Console.WriteLine(" NO HAY EXPEDIENTES TIPO '{0}' EN EL MES {1}", tipo, mes);
 				}
 			}
 			else
@@ -248,13 +273,51 @@ namespace TRABAJO_INTEGRADOR
 			long           dni;
 			Expediente     expediente  = new Expediente();
 			EstudioAbogado estudio     = new EstudioAbogado(LIMITE_DE_ABOGADOS, MAXIMO_DE_EXPEDIENTES_POR_ABOGADOS);
+			bool ok;
 			
-			cargarAbogados(ref estudio);
-			cargarExpedientes(ref estudio);
 			
-			try {
-					do
-					{
+			//CARGA DE ABOGADOS
+			do 
+			{
+				try 
+				{
+					Console.Clear();
+					ok = true;
+					cargarAbogados(ref estudio);						
+				}
+				catch(FormatException)
+				{
+					ok = false;
+					Console.WriteLine(" NO INGRESO UN DATO CORRECTAMENTE");
+					Console.ReadKey(true);
+					Console.Clear();
+					continue;
+				}
+			}while(!ok);
+			
+			//CARGA DE EXPEDIENTES			
+			do 
+			{
+				try 
+				{
+					Console.Clear();
+					ok = true;
+					cargarExpedientes(ref estudio);						
+				}
+				catch(FormatException)
+				{
+					ok = false;
+					Console.WriteLine(" NO INGRESO UN DATO CORRECTAMENTE");
+					Console.ReadKey(true);
+					Console.Clear();
+					continue;
+				}
+			}while(!ok);
+	
+       		//MENU PRINCIPAL			
+			do{
+				try {
+					
 						Console.Clear();
 						menu();
 						opcion = int.Parse(Console.ReadLine());
@@ -270,11 +333,19 @@ namespace TRABAJO_INTEGRADOR
 								break;
 							case 2 :
 								Console.WriteLine("\n                ELIMINAR UN ABOGADO\n");
-								Console.Write(" ingrese dni del abogado que desea eliminar: ");
-								dni = long.Parse(Console.ReadLine());
-								Console.WriteLine("");
-								abogado.setDni(dni);
-								estudio.eliminarAbogado(abogado);
+								if(estudio.cantidadDeAbogados() > 0)
+								{
+									listarAbogados(estudio);
+									Console.WriteLine("______________________________________________________________");
+									Console.Write(" ingrese D.N.I. del abogado que desea eliminar: ");
+									dni = long.Parse(Console.ReadLine());
+									Console.WriteLine("");
+									estudio.eliminarAbogado(dni);
+								}
+								else
+								{
+									Console.WriteLine(" DEBE INGRESAR ABOGADOS A LISTA DE ABOGADOS PRIMERO");
+								}
 								break;
 							case 3 :
 								Console.WriteLine("\n                  LISTAR ABOGADOS\n");
@@ -292,23 +363,63 @@ namespace TRABAJO_INTEGRADOR
 								break;
 							case 6 :
 								Console.WriteLine("\n         MODIFICAR ESTADO DE UN EXPEDIENTE\n");
-								Console.Write(" Ingrese el numero de expediente para MODIFICAR ESTADO: ");
-								numeroExpediente = int.Parse(Console.ReadLine());
-								Console.Write(" Ingrese nuevo estado del expediente: ");
-								string nuevoEstado = Console.ReadLine();
-								Console.WriteLine("");
-								estudio.modificarEstadoExpediente(numeroExpediente, nuevoEstado);
+								if(estudio.cantidadDeExpedientes() > 0)
+								{
+									listarExpedientes(estudio);
+									Console.WriteLine("______________________________________________________________");
+									Console.Write(" Ingrese el numero de expediente para MODIFICAR ESTADO: ");
+									numeroExpediente = int.Parse(Console.ReadLine());
+									Console.Write(" Ingrese nuevo estado del expediente: ");
+									string nuevoEstado = Console.ReadLine();
+									Console.WriteLine("");
+									estudio.modificarEstadoDeUnExpediente(numeroExpediente, nuevoEstado);
+								}
+								else
+								{
+									Console.WriteLine(" DEBE INGRESAR EXPEDIENTES A LA LISTA DE EXPEDIENTES PRIMERO");
+								}
 								break;
 							case 7 :
-								Console.WriteLine("\n          ELIMINAR UN EXPEDIENTE\n");
-								Console.Write(" Ingrese el numero de expediente que desea ELIMINAR: ");
-								numeroExpediente = int.Parse(Console.ReadLine());
-								Console.WriteLine("");
-								estudio.eliminarExpediente(numeroExpediente);
+								Console.WriteLine("\n         MODIFICAR ABOGADO A CARGO DE UN EXPEDIENTE\n");
+								if(estudio.cantidadDeAbogados() > 0)
+								{
+									if(estudio.cantidadDeExpedientes() > 0)
+									{
+										listarExpedientes(estudio);
+										Console.WriteLine("______________________________________________________________");
+										Console.Write(" Ingrese el numero de expediente para MODIFICAR ABOGADO A CARGO: ");
+										numeroExpediente = int.Parse(Console.ReadLine());
+										abogado = elegirAbogadoParaExpediente(estudio);
+										Console.WriteLine("");
+										estudio.modificarAbogadoACargoDeUnExpediente(numeroExpediente, abogado);
+									}
+									else
+									{
+										Console.WriteLine(" DEBE INGRESAR EXPEDIENTES A LA LISTA DE EXPEDIENTES PRIMERO");
+									}
+								}
+								else
+								{
+									Console.WriteLine(" DEBE INGRESAR ABOGADOS A LISTA DE ABOGADOS PRIMERO");
+								}
 								break;
 							case 8 :
+								Console.WriteLine("\n          ELIMINAR UN EXPEDIENTE\n");
+								if(estudio.cantidadDeExpedientes() > 0)
+								{
+									Console.Write(" Ingrese el numero de expediente que desea ELIMINAR: ");
+									numeroExpediente = int.Parse(Console.ReadLine());
+									Console.WriteLine("");
+									estudio.eliminarExpediente(numeroExpediente);
+								}
+								else
+								{
+									Console.WriteLine(" DEBE INGRESAR EXPEDIENTES A LA LISTA PRIMERO");
+								}
+								break;
+							case 9 :
 								Console.WriteLine("\n       LISTAR 'AUDIENCIAS' EN UN MES DETERMINADA\n");
-								Console.Write(" Ingrese el NUMERO DE MES para conocer las audiencias: ");
+								Console.Write(" Ingrese el NUMERO DEL MES para conocer las audiencias en ese mes: ");
 								int mes = int.Parse(Console.ReadLine());
 								Console.WriteLine("");
 								listarExpedientes(estudio, mes, "AUDIENCIA");
@@ -317,39 +428,55 @@ namespace TRABAJO_INTEGRADOR
 								break;
 							default :
 								Console.WriteLine(" {0} NO es una opcion valida", opcion);
-								Console.WriteLine(" DEBE INGRESAR UNA OPCION ENTRE 0 Y 3");
+								Console.WriteLine(" DEBE INGRESAR UNA OPCION ENTRE 0 Y 9");
 								break;
 						}
 						Console.Write(" Presione una tecla para continuar...");
-						Console.ReadKey(true);				
-					}while(opcion != 0);
+						Console.ReadKey(true);
 				}
 				catch (FormatException)
 				{
-					Console.WriteLine(" ERROR: LA OPCION INGRESADA DEBE SER UN NUMERO ENTERO ENTRE 0 y 8");
-					Console.Write(" PRESIONE UNA TECLA PARA CONTINUAR...");
+					Console.WriteLine(" ERROR: INGRESO UN DATO INCORRECTO");
 					Console.ReadKey(true);
+					opcion = -1;
+					continue;
 				}
 				catch (AbogadoInexistente ex)
 				{
 					Console.WriteLine(ex.getMensaje());
+					Console.ReadKey(true);
+					opcion = -1;
+					continue;
 				}
 				catch (AbogadoRepetido ex)
 				{
 					Console.WriteLine(ex.getMensaje());
+					Console.ReadKey(true);
+					opcion = -1;
+					continue;
 				}
 				catch (ExpedienteInexistente ex)
 				{
 					Console.WriteLine(ex.getMensaje());
+					Console.ReadKey(true);
+					opcion = -1;
+					continue;
 				}
 				catch (SobrepasoLimiteDeAbogados ex)
 				{
 					Console.WriteLine(ex.getMensaje());
+					Console.ReadKey(true);
+					opcion = -1;
+					continue;
 				}
 				catch (SobrepasoLimiteDeExpedientes ex)
 				{
 					Console.WriteLine(ex.getMensaje());
+					Console.ReadKey(true);
+					opcion = -1;
+					continue;
 				}
+			}while(opcion != 0);	
 		}
 	}
 }

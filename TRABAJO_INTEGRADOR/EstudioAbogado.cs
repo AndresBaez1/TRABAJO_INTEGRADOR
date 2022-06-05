@@ -16,8 +16,8 @@ namespace TRABAJO_INTEGRADOR
 	/// </summary>
 	public class EstudioAbogado
 	{
-		private int 	  limiteDeAbogados;
-		private int 	  maximoExpedientesPorAbogado;
+		private int       limiteDeAbogados;
+		private int       maximoExpedientesPorAbogado;
 		private ArrayList abogados;
 		private int       indiceAbogados;
 		private ArrayList expedientes;
@@ -30,10 +30,10 @@ namespace TRABAJO_INTEGRADOR
 		
 		public EstudioAbogado(int limite, int maximoExpedientesPorAbogado) 
 		{
-			this.limiteDeAbogados 		     = limite;
+			this.limiteDeAbogados            = limite;
 			this.maximoExpedientesPorAbogado = maximoExpedientesPorAbogado;
-			this.abogados		  			 = new ArrayList();
-			this.expedientes 	 			 = new ArrayList();
+			this.abogados                    = new ArrayList();
+			this.expedientes                 = new ArrayList();
 		}
 		
 		public void comenzarAbogados()
@@ -49,6 +49,11 @@ namespace TRABAJO_INTEGRADOR
 		public Abogado pedirAbogado()
 		{
 			return ((Abogado)(this.abogados[indiceAbogados]));
+		}
+		
+		public Abogado pedirAbogadoPorPosicion(int i)
+		{
+			return ((Abogado)(this.abogados[i]));
 		}
 		
 		public int cantidadDeAbogados()
@@ -111,27 +116,6 @@ namespace TRABAJO_INTEGRADOR
 			}
 		}
 		
-		public ArrayList abogadosDisponibles() //Devuelve una lista con los abogados disponibles
-		{
-			ArrayList listaDisponibles = new ArrayList();
-				
-			for(int i = 0; i < this.abogados.Count; i++)//Se recorren todos los expedientes
-			{
-				if(((Abogado)(this.abogados[i])).getCantidadDeExpedientes() < this.maximoExpedientesPorAbogado)
-				{
-					listaDisponibles.Add(abogados[i]);
-				}
-						
-			}
-			
-			if(listaDisponibles.Count == 0)
-			{
-				throw new SobrepasoLimiteDeExpedientes(" ERROR: TODOS LOS ABOGADOS LLEGARON A SU LIMITE...");
-			}
-			
-			return listaDisponibles;
-		}
-		
 		public void modificarAbogadoDeExpedientes(Abogado abogado)
 		{
 			int j;
@@ -160,6 +144,25 @@ namespace TRABAJO_INTEGRADOR
 				}		
 			}
 		}
+		public int buscarAbogado(long dni)
+		{
+			int posicion;
+			posicion = 0;
+			
+			while( (posicion < this.abogados.Count) && (((Abogado)(this.abogados[posicion])).getDni() != dni ) )
+				//Mientras no llegó al limite del arreglo y no encontró el dni.
+			{
+				posicion++;
+			};
+			
+			if( (posicion < this.abogados.Count) && (((Abogado)(this.abogados[posicion])).getDni() == dni ))
+			{
+				return posicion; //Retorna la posicion donde se encuentra el abogado buscado.
+			}
+			else 
+				throw new AbogadoInexistente(" ERROR: EL ABOGADO QUE BUSCA NO EXISTE");
+			
+		}
 		
 		public Abogado buscarAbogadoConMenosExpedientes()
 		{
@@ -178,40 +181,67 @@ namespace TRABAJO_INTEGRADOR
 			return (abogadoRetorno);
 		}
 		
-		public void eliminarAbogado(Abogado abogado)
-		{			
-			if(existeDniAbogado(abogado.getDni()))//Si el abogado que voy a eliminar está dentro del estudio.
+		private void eliminarAbogadoACargoEnExpedientes(Abogado abogado)//recibe el abogado a ser eliminado
+		{
+			bool error;
+			error = false;
+			
+			for(int i= 0; i < this.expedientes.Count; i++) //recorro la lista de expedientes
 			{
-				int posicionAbogado   = buscarAbogado(abogado);    //Optengo el indice de la lista de abogados
-				abogado = (Abogado)this.abogados[posicionAbogado]; //Optengo el abogado a eliminar con el indice.
-				
-				this.abogados.Remove(abogado); //Elimino el abogado de la lista de abogados.
-				Console.WriteLine(" EL ABOGADO [{0}] D.N.I.: [{1}] FUE ELIMINADO", abogado.getNombreYApellido(), abogado.getDni());
-				
-				for(int i= 0; i < this.expedientes.Count; i++) //recorro la lista de expedientes
+				if(((Expediente)(this.expedientes[i])).getAbogadoACargo().esIgual(abogado))//encuentro el expediente del abogado
 				{
-					if(((Expediente)(this.expedientes[i])).getAbogadoACargo().esIgual(abogado))//encuentro el expediente del abogado
+					Abogado abogadoNuevo;
+					if(this.abogados.Count == 0)//Si ya no hay abogados
 					{
-						Abogado abogadoNuevo = new Abogado(); //Creo un nuevo abogado
-						abogadoNuevo = this.buscarAbogadoConMenosExpedientes();//El nuevo abogado será el que menos expedientes tenga a cargo
-						
-						if(abogadoNuevo.getCantidadDeExpedientes() < this.maximoExpedientesPorAbogado)//Si hay abogados disponibles todavia
+						abogadoNuevo = null;
+						Console.WriteLine(" ABOGADO A CARGO DEL EXPEDIENTE NUMERO[{0}] SERA REASIGNADO", ((Expediente)(this.expedientes[i])).getNumero());
+						Console.WriteLine(" NUEVO ABOGADO ASIGNADO: NINGUN ABOGADO A CARGO");
+						((Expediente)(this.expedientes[i])).setAbogadoACargo(abogadoNuevo);
+						error = true;
+					}
+					else
+					{
+						abogadoNuevo = this.buscarAbogadoConMenosExpedientes();//Optengo una referencia al abogado con menos expedientes a cargo.
+						if(abogadoNuevo.getCantidadDeExpedientes() < this.maximoExpedientesPorAbogado)//Si hay abogados que no llegaron a limite de expedientes
 						{
-							posicionAbogado = this.buscarAbogado(abogadoNuevo); //optengo el indice de la lista de abogados para el nuevo abogado
-							((Abogado)this.abogados[posicionAbogado]).incrementarCantidadDeExpedientes(); //Incremento la cantidad de expedientes de nuevo abogado a cargo.
-							
+							abogadoNuevo.incrementarCantidadDeExpedientes();//Incremento la cantidad de expedientes del abogado nuevo
+						
 							((Expediente)(this.expedientes[i])).setAbogadoACargo(abogadoNuevo);//Seteo el nuevo abogado con la candidad de expedientes incrementada
-							
+						
 							Console.WriteLine(" ABOGADO A CARGO DEL EXPEDIENTE NUMERO[{0}] REASIGNADO", ((Expediente)(this.expedientes[i])).getNumero());
 							Console.Write(" NUEVO ABOGADO ASIGNADO: {0}  ", abogadoNuevo.getNombreYApellido());
 							Console.WriteLine(" D.N.I : {0}", abogadoNuevo.getDni());
 						}
 						else							
 						{
-							throw new SobrepasoLimiteDeExpedientes(" HAY EXPEDIENTES QUE NO PUDIERON REASIGNARSELE NINGUN ABOGADO A CARGO");
+							abogadoNuevo = null;
+							Console.WriteLine(" ABOGADO A CARGO DEL EXPEDIENTE NUMERO[{0}] SERA REASIGNADO", ((Expediente)(this.expedientes[i])).getNumero());
+							Console.WriteLine(" NUEVO ABOGADO ASIGNADO: NINGUN ABOGADO A CARGO");
+							((Expediente)(this.expedientes[i])).setAbogadoACargo(abogadoNuevo);
+							error = true;
 						}
 					}
 				}
+			}
+			if(error)
+			{
+				throw new SobrepasoLimiteDeExpedientes(" HAY EXPEDIENTES QUE NO PUDIERON REASIGNARSELE NINGUN ABOGADO A CARGO");
+			}
+		}
+		
+		
+		public void eliminarAbogado(long dni)
+		{			
+			if(existeDniAbogado(dni))//Si el abogado que voy a eliminar está dentro del estudio.
+			{
+				int posicionAbogado   = buscarAbogado(dni);    //Optengo el indice de la lista de abogados
+				Abogado abogado = (Abogado)(this.abogados[posicionAbogado]); //Optengo el abogado en una variable
+				
+				this.abogados.RemoveAt(posicionAbogado); //Elimino el abogado de la lista de abogados.
+				eliminarAbogadoACargoEnExpedientes(abogado); //Reasigno los expedientes del abogado
+				
+				Console.WriteLine(" EL ABOGADO [{0}] D.N.I.: [{1}] FUE ELIMINADO", abogado.getNombreYApellido(), abogado.getDni());
+				
 			}
 			else
 				throw new AbogadoInexistente(" ERROR: EL ABOGADO QUE INTENTA ELIMINAR NO EXISTE...");
@@ -219,40 +249,53 @@ namespace TRABAJO_INTEGRADOR
 		
 		public void agregarExpediente(Expediente expedienteNuevo)
 		{
-			Abogado abogado = new Abogado();
+			Abogado abogado;
+			
 			abogado = expedienteNuevo.getAbogadoACargo();
 			
-
 			int i;
 			i = 0;
 			
-			while((i<this.abogados.Count) && (((Abogado)(this.abogados[i])).esDistinto(abogado)))
-				//Mientras no llegó al limite del arreglo y no encontro el abogado.
+			if(this.abogados.Count > 0)
 			{
-				i++;
-			};
-			if(((Abogado)(this.abogados[i])).getCantidadDeExpedientes() < (this.maximoExpedientesPorAbogado))
-			{
-				((Abogado)(this.abogados[i])).incrementarCantidadDeExpedientes();//Incremento la cantidad de expedientes
-				expedienteNuevo.setAbogadoACargo((Abogado)this.abogados[i]);//Actualizo el abogado en la lista de expedientes
+				while((i<this.abogados.Count) && (((Abogado)(this.abogados[i])).esDistinto(abogado)))
+						//Mientras no llegó al limite del arreglo y no encontro el abogado.
+				{
+					i++;
+				};
 				
-				expedientes.Add(expedienteNuevo); //Agrego el expediente al estudio.
+				if(((Abogado)(this.abogados[i])).getCantidadDeExpedientes() < (this.maximoExpedientesPorAbogado))
+				{
+					((Abogado)(this.abogados[i])).incrementarCantidadDeExpedientes();//Incremento la cantidad de expedientes
+					expedienteNuevo.setAbogadoACargo((Abogado)this.abogados[i]);//Actualizo el abogado en la lista de expedientes
 				
+					expedientes.Add(expedienteNuevo); //Agrego el expediente al estudio.
+					Console.WriteLine(" Expediente agregado correctamente");
+				
+				}
+				else 
+				{
+					throw new SobrepasoLimiteDeExpedientes(" EL ABOGADO ["+((Abogado)(this.abogados[i])).getNombreYApellido()+
+					                                       "] NO PUEDE ESTAR A CARGO DE TANTOS EXPEDIENTES...\n" +
+				 	                                       " EL EXPEDIENTE NO PUDO SER AGREGADO\n" +
+					                                       " DEBE PONER OTRO ABOGADO A CARGO DEL EXPEDIENTE");
+			
+				}
 			}
 			else 
 			{
-				throw new SobrepasoLimiteDeExpedientes(" EL ABOGADO A CARGO NO PUEDE ESTAR A CARGO DE TANTOS EXPEDIENTES...\n" +
-				                                     " EL EXPEDIENTE NO PUDO SER AGREGADO\n" +
-				                                     " DEBE PONER OTRO ABOGADO A CARGO DEL EXPEDIENTE");
-			
+				expedientes.Add(expedienteNuevo);
+				Console.WriteLine(" EL EXPEDIENTE SE AGREGO SIN NINGUN ABOGADO");
+				Console.WriteLine(" INGRESE ABOGADOS A LA LISTA DE ABOGADOS PARA MODIFICAR ESTE EXPEDIENTE");
 			}
-
+	
 		}
 		
-		public void modificarEstadoExpediente(int numeroExpediente, string nuevoEstado)
+		public void modificarEstadoDeUnExpediente(int numeroExpediente, string nuevoEstado)
 		{
 			int i;
-			i=0;
+			i = 0;
+			
 			while((i < this.expedientes.Count)&&(((Expediente)(this.expedientes[i])).getNumero() != numeroExpediente))
 				//Mientras no llegé al final de la lista y no encontré el expediente.
 			{
@@ -270,31 +313,37 @@ namespace TRABAJO_INTEGRADOR
 				throw new ExpedienteInexistente(" ERROR: EL EXPEDIENTE QUE INTENTA MODIFICAR NO EXISTE");
 				
 		}
-		public int buscarAbogado(Abogado abogado)
+		
+		public void modificarAbogadoACargoDeUnExpediente(int numeroDeExpediente, Abogado nuevoAbogado)
 		{
-			int posicion;
-			posicion = 0;
+			int i;
+			i = 0;
 			
-			while( (posicion < this.abogados.Count) && (((Abogado)(this.abogados[posicion])).getDni() != abogado.getDni() ) )
-				//Mientras no llegó al limite del arreglo y no encontró el dni.
+			while((i < this.expedientes.Count)&&(((Expediente)(this.expedientes[i])).getNumero() != numeroDeExpediente))
+				//Mientras no llegé al final de la lista y no encontré el expediente.
 			{
+				i++;
+			}
+			if((i < this.expedientes.Count)&&(((Expediente)(this.expedientes[i])).getNumero() == numeroDeExpediente))
+				//Si encontré el expediente.
+			{
+				((Expediente)(this.expedientes[i])).setAbogadoACargo(nuevoAbogado);
+				Console.WriteLine(((Expediente)(this.expedientes[i])).toString()); //Muestro el expediente que fue modificado
+				Console.WriteLine("");
+				Console.WriteLine(" EL ABOGADO A CARGO DEL EXPEDIENTE FUE MODIFICADO");
 				
-				posicion++;
-			};
-			
-			if( (posicion < this.abogados.Count) && (((Abogado)(this.abogados[posicion])).getDni() == abogado.getDni() ))
-			{
-				return posicion; //Retorna la posicion donde se encuentra el abogado buscado.
+				int posicion = buscarAbogado(nuevoAbogado.getDni());
+				((Abogado)(this.abogados[posicion])).incrementarCantidadDeExpedientes();
 			}
 			else 
-				throw new AbogadoInexistente(" ERROR: EL ABOGADO QUE BUSCA NO EXISTE");
+				throw new ExpedienteInexistente(" ERROR: EL EXPEDIENTE QUE INTENTA MODIFICAR NO EXISTE");
 			
 		}
 		
 		public void eliminarExpediente(int numeroExpediente)
 		{
 			int i;
-			i=0;
+			i = 0;
 			
 			while((i < this.expedientes.Count)&&(((Expediente)(this.expedientes[i])).getNumero() != numeroExpediente))
 				//Mientras no llegé al final de la lista y no encontré el expediente.
@@ -305,13 +354,9 @@ namespace TRABAJO_INTEGRADOR
 				//Si encontré el expediente.
 			{
 				Abogado abogadoACargo = ((Expediente)(this.expedientes[i])).getAbogadoACargo();
-				//Le pido al expediente el abogado a cargo.
+				//Le pido al expediente el abogado a cargo; Me devuelve una referencia al abogado.
 				
-				int posicion = this.buscarAbogado(abogadoACargo);
-				//Busco la posicion del abogado a cargo en la lista de abogados.
-				
-				((Abogado)(this.abogados[posicion])).decrementarCantidadDeExpedientes();
-				//Decremento la cantidad de expedientes del abogado.
+				abogadoACargo.incrementarCantidadDeExpedientes();
 				
 				Console.WriteLine(((Expediente)(this.expedientes[i])).toString());//Informo el expediente eliminado
 				Console.WriteLine("");
