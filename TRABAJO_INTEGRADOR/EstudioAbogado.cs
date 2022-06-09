@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: andre
- * Date: 24/5/2022
- * Time: 18:10
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
 using System.Collections;
 
 namespace TRABAJO_INTEGRADOR
@@ -327,6 +319,11 @@ namespace TRABAJO_INTEGRADOR
 			if((i < this.expedientes.Count)&&(((Expediente)(this.expedientes[i])).getNumero() == numeroDeExpediente))
 				//Si encontré el expediente.
 			{
+				if(((Expediente)(this.expedientes[i])).getAbogadoACargo() != null )
+				{
+					((Expediente)(this.expedientes[i])).getAbogadoACargo().decrementarCantidadDeExpedientes();
+					
+				}
 				((Expediente)(this.expedientes[i])).setAbogadoACargo(nuevoAbogado);
 				Console.WriteLine(((Expediente)(this.expedientes[i])).toString()); //Muestro el expediente que fue modificado
 				Console.WriteLine("");

@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: andre
- * Date: 25/5/2022
- * Time: 23:25
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
 using System.Runtime.Serialization;
 
 namespace TRABAJO_INTEGRADOR

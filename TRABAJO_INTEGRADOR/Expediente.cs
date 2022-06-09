@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: andre
- * Date: 24/5/2022
- * Time: 17:36
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
 
 namespace TRABAJO_INTEGRADOR
 {
@@ -148,16 +140,6 @@ namespace TRABAJO_INTEGRADOR
 		public void setFecha(DateTime fecha)
 		{
 			this.fecha = fecha;
-		}
-		
-		public void setExpediente(int numero, string titular, string tipo, string estado, Abogado abogadoACargo, DateTime fecha)
-		{
-			this. numero        = numero;
-			this.titular        = titular;
-			this.tipo           = tipo;
-			this.estado         = estado;
-			this.abogadoACargo  = abogadoACargo;
-			this.fecha          = fecha;
 		}
 	}
 }

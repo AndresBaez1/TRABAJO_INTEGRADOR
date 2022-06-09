@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: andre
- * Date: 24/5/2022
- * Time: 18:02
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
 
 namespace TRABAJO_INTEGRADOR
 {
@@ -31,14 +23,6 @@ namespace TRABAJO_INTEGRADOR
 			this.dni                    = dni;
 			this.especialidad           = especialidad;
 			this.cantidadDeExpedientes  = 0;
-		}
-		
-		public void setAbogado( string nombreYApellido, long dni, string especialidad, int cantidadExpedientes )
-		{
-			this.nombreYApellido        = nombreYApellido;
-			this.dni                    = dni;
-			this.especialidad           = especialidad;
-			this.cantidadDeExpedientes  = cantidadExpedientes;
 		}
 		
 		public string getNombreYApellido()
