@@ -81,16 +81,14 @@ namespace TRABAJO_INTEGRADOR
 			Console.WriteLine("______________________________________________________________");
 			Console.WriteLine("[[[[[[[[[[[[[[[ LISTA DE ABOGADOS DISPONIBLES ]]]]]]]]]]]]]]]]\n");
 			
-			estudio.comenzarAbogados();
 			for(int i = 0; i < estudio.cantidadDeAbogados(); i++)
 			{
-				if(estudio.pedirAbogado().getCantidadDeExpedientes() < MAXIMO_DE_EXPEDIENTES_POR_ABOGADOS )
+				if(estudio.pedirAbogadoPorPosicion(i).getCantidadDeExpedientes() < MAXIMO_DE_EXPEDIENTES_POR_ABOGADOS )
 				{
 					contador++;
 					Console.WriteLine("               [NUMERO DE POSICION: {0}]", (i+1));//Enumera los abogados desde 1
-					imprimirAbogado(estudio.pedirAbogado());
+					imprimirAbogado(estudio.pedirAbogadoPorPosicion(i));
 				}
-				estudio.siguienteAbogado();
 			}
 			Console.WriteLine("______________________________________________________________");
 			
@@ -200,12 +198,10 @@ namespace TRABAJO_INTEGRADOR
 		{
 			if(estudio.cantidadDeAbogados() > 0)
 			{
-				estudio.comenzarAbogados();
 				for(int i = 0; i < estudio.cantidadDeAbogados(); i++)
 				{
-					Console.WriteLine(estudio.pedirAbogado().toString());
+					Console.WriteLine(estudio.pedirAbogadoPorPosicion(i).toString());
 					Console.WriteLine("");
-					estudio.siguienteAbogado();
 				}
 			}
 			else
@@ -218,12 +214,11 @@ namespace TRABAJO_INTEGRADOR
 		{
 			if(estudio.cantidadDeExpedientes() > 0)
 			{
-				estudio.comenzarExpedientes();
+
 				for(int i = 0; i < estudio.cantidadDeExpedientes(); i++)
 				{
-					Console.WriteLine(estudio.pedirExpediente().toString());
+					Console.WriteLine(estudio.pedirExpedientePorPosicion(i).toString());
 					Console.WriteLine("");
-					estudio.siguienteExpediente();
 				}
 			}
 			else
@@ -240,20 +235,18 @@ namespace TRABAJO_INTEGRADOR
 			if(estudio.cantidadDeExpedientes() > 0)
 			{
 				contador = 0;
-				estudio.comenzarExpedientes();
 				for(int i = 0; i < estudio.cantidadDeExpedientes(); i++)
 				{
-					mesActual  = estudio.pedirExpediente().getFecha().Month ;
-					tipoActual = estudio.pedirExpediente().getTipo().ToUpper();
+					mesActual  = estudio.pedirExpedientePorPosicion(i).getFecha().Month ;
+					tipoActual = estudio.pedirExpedientePorPosicion(i).getTipo().ToUpper();
 				
 					if ((mesActual == mes)&&(tipoActual == tipo))
 					{
-						Console.WriteLine(estudio.pedirExpediente().toString());
+						Console.WriteLine(estudio.pedirExpedientePorPosicion(i).toString());
 						Console.WriteLine("");
 						contador++;
 						
 					}
-					estudio.siguienteExpediente();
 				}
 				if(contador == 0)
 				{

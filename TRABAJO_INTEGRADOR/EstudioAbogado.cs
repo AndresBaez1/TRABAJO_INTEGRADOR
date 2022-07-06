@@ -11,9 +11,9 @@ namespace TRABAJO_INTEGRADOR
 		private int       limiteDeAbogados;
 		private int       maximoExpedientesPorAbogado;
 		private ArrayList abogados;
-		private int       indiceAbogados;
+		//private int       indiceAbogados;
 		private ArrayList expedientes;
-		private int       indiceExpedientes;
+		//private int       indiceExpedientes;
 		
 		public EstudioAbogado()
 		{
@@ -28,7 +28,7 @@ namespace TRABAJO_INTEGRADOR
 			this.expedientes                 = new ArrayList();
 		}
 		
-		public void comenzarAbogados()
+		/*public void comenzarAbogados()
 		{
 			this.indiceAbogados = 0;
 		}
@@ -38,10 +38,10 @@ namespace TRABAJO_INTEGRADOR
 			this.indiceAbogados++;		
 		}
 		
-		public Abogado pedirAbogado()
+		public Abogado pedirAbogado(int indiceAbogados)
 		{
 			return ((Abogado)(this.abogados[indiceAbogados]));
-		}
+		}*/
 		
 		public Abogado pedirAbogadoPorPosicion(int i)
 		{
@@ -53,7 +53,7 @@ namespace TRABAJO_INTEGRADOR
 			return (this.abogados.Count);
 		}
 		
-		public void comenzarExpedientes()
+		/*public void comenzarExpedientes()
 		{
 			this.indiceExpedientes = 0;
 		}
@@ -66,6 +66,11 @@ namespace TRABAJO_INTEGRADOR
 		public Expediente pedirExpediente()
 		{
 			return ((Expediente)(this.expedientes[indiceExpedientes]));
+		}*/
+		
+		public Expediente pedirExpedientePorPosicion(int i)
+		{
+			return ((Expediente)(this.expedientes[i]));
 		}
 		
 		public int cantidadDeExpedientes()
